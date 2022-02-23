@@ -1,0 +1,36 @@
+{
+  "name": "battleships",
+  "version": "1.0.0",
+  "description": "A battleships game made using Javascript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack",
+    "start": "webpack serve --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AidenM99/Battleships.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AidenM99/Battleships/issues"
+  },
+  "homepage": "https://github.com/AidenM99/Battleships#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "css-loader": "^6.6.0",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  }
+}
