@@ -23,13 +23,13 @@ export default class Gameboard {
   receiveAttack(x, y) {
     this.board[x][y].shot = true;
     if (this.board[x][y].ship instanceof Ship) {
-      this.board[x][y].ship.hit({ posX: x, posY: y });
+      this.board[x][y].ship.hit(x, y);
     }
   }
 
-  isGameOver() {
+  /*isGameOver() {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {}
     }
-  }
+  }*/
 }

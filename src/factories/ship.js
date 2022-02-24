@@ -4,8 +4,8 @@ export default class Ship {
     this.hits = [];
   }
 
-  hit(pos) {
-    this.hits.push(pos);
+  hit(x, y) {
+    this.hits.push({ posX: x, posY: y });
   }
 
   isSunk() {

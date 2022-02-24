@@ -19,7 +19,7 @@ describe('Gameboard', () => {
   });
 
   test('gameboard is correctly initialised', () => {
-    expect(gameboard.board).toEqual(expect.arrayContaining(testArray));
+    expect(gameboard.board).toEqual(expect.arrayContaining(testBoard));
   });
 
   test('ship is correctly placed', () => {
