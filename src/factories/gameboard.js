@@ -3,7 +3,6 @@ import Ship from './ship';
 export default class Gameboard {
   constructor() {
     this.board = [];
-    this.ships = [];
     this.initialiseBoard();
   }
 
@@ -17,7 +16,9 @@ export default class Gameboard {
   }
 
   placeShip(x, y, ship) {
-    this.board[x][y].ship = ship;
+    for (let i = 0; i < ship.length; i++) {
+      this.board[x][y + i].ship = ship;
+    }
   }
 
   receiveAttack(x, y) {
@@ -27,9 +28,16 @@ export default class Gameboard {
     }
   }
 
-  /*isGameOver() {
+  isGameOver() {
     for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {}
+      for (let j = 0; j < 10; j++) {
+        if (this.board[i][j].ship instanceof Ship) {
+          if (!this.board[i][j].ship.isSunk()) {
+            return false;
+          }
+        }
+      }
     }
-  }*/
+    return true;
+  }
 }
