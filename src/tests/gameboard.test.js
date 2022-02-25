@@ -4,6 +4,7 @@ import Ship from '../factories/ship';
 
 describe('Gameboard', () => {
   let gameboard;
+  let ship;
 
   const testBoard = [];
 
@@ -16,6 +17,7 @@ describe('Gameboard', () => {
 
   beforeEach(() => {
     gameboard = new Gameboard();
+    ship = new Ship(3);
   });
 
   test('gameboard is correctly initialised', () => {
@@ -23,9 +25,8 @@ describe('Gameboard', () => {
   });
 
   test('ship is correctly placed', () => {
-    const carrier = new Ship(3);
-    gameboard.placeShip(0, 0, carrier);
-    expect(gameboard.board[0][0].ship).toEqual(carrier);
+    gameboard.placeShip(0, 0, ship);
+    expect(gameboard.board[0][0].ship).toEqual(ship);
   });
 
   test('position correctly receives attack', () => {
@@ -34,11 +35,25 @@ describe('Gameboard', () => {
   });
 
   test('receive attack function recognises if ship is hit on position', () => {
-    const carrier = new Ship(3);
-    gameboard.placeShip(0, 0, carrier);
+    gameboard.placeShip(0, 0, ship);
     gameboard.receiveAttack(0, 0);
     expect(gameboard.board[0][0].ship.hits).toStrictEqual([
       { posX: 0, posY: 0 },
     ]);
+  });
+
+  test('game is over when all ships are destroyed', () => {
+    gameboard.placeShip(0, 0, ship);
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(0, 2);
+    expect(gameboard.isGameOver()).toBe(true);
+  });
+
+  test('game is not over when all ships are not destroyed', () => {
+    gameboard.placeShip(0, 0, ship);
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(0, 1);
+    expect(gameboard.isGameOver()).toBe(false);
   });
 });
