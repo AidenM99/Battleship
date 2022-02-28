@@ -15,6 +15,6 @@ export default class Player {
   randomAttack(gameboard) {
     const x = Math.floor(Math.random() * 10);
     const y = Math.floor(Math.random() * 10);
-    gameboard.receiveAttack(x, y);
+    gameboard.receiveAttack(x, y, gameboard, this);
   }
 }
