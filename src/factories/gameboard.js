@@ -21,7 +21,13 @@ export default class Gameboard {
     }
   }
 
-  receiveAttack(x, y) {
+  receiveAttack(x, y, gameboard, player) {
+    if (this.board[x][y].shot === true) {
+      if (player.name === 'computer') {
+        player.randomAttack(gameboard);
+      }
+      return;
+    }
     this.board[x][y].shot = true;
     if (this.board[x][y].ship instanceof Ship) {
       this.board[x][y].ship.hit(x, y);
