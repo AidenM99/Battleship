@@ -1,4 +1,4 @@
 import './styles/style.css';
-import createGrid from './dom';
+import { renderBoard } from './board';
 
-createGrid();
+renderBoard();
