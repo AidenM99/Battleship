@@ -5,9 +5,9 @@
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  height: 21.875rem;
-  min-width: 21.875rem;
-  max-width: 21.875rem;
+  height: 30rem;
+  min-width: 30rem;
+  max-width: 30rem;
 }
 
 body {
@@ -35,9 +35,23 @@ main {
   .computer-gameboard {
     @include createGrid();
     margin-left: 2rem;
+    display: none;
   }
-  .grid-lines {
+  .grid-square {
     border: solid 1px;
+  }
+  .ship {
+    margin: 5px;
+    div {
+      background-color: grey;
+      border: solid 1px;
+      cursor: move;
+      height: 2.875rem;
+      width: 2.875rem;
+    }
+  }
+  .hide {
+    display: none;
   }
 }
 
