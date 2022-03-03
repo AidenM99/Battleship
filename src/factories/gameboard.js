@@ -15,10 +15,21 @@ export default class Gameboard {
     }
   }
 
+  isPlacementPossible(x, y, ship) {
+    for (let i = 0; i < ship.length; i++) {
+      if (this.board[x][y + i].ship instanceof Ship) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   placeShip(x, y, ship) {
+    if (!this.isPlacementPossible(x, y, ship)) return false;
     for (let i = 0; i < ship.length; i++) {
       this.board[x][y + i].ship = ship;
     }
+    return true;
   }
 
   receiveAttack(x, y, gameboard, player) {
