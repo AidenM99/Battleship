@@ -1,7 +1,8 @@
 import Player from './factories/player';
 
-const user = new Player();
+const players = {
+  user: new Player('user'),
+  computer: new Player('computer'),
+};
 
-const computer = new Player();
-
-export { user, computer };
+export default players;
