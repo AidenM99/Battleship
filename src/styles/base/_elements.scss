@@ -1,0 +1,21 @@
+@import '../sass-utils/variables';
+@import '../sass-utils/mixins';
+
+body {
+  margin: 0;
+  background-color: $background;
+  main {
+    @include displayFlex(row, center, stretch);
+    height: 30rem;
+  }
+  header {
+    margin: 2rem 0;
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+}

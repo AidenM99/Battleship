@@ -1,0 +1,46 @@
+@import '../sass-utils/mixins';
+@import '../sass-utils/variables';
+
+.user-gameboard {
+  @include createGrid;
+  @include createBorder(solid, 1px, $colour-white);
+  margin-right: 2rem;
+}
+
+.computer-gameboard {
+  @include createGrid;
+  @include createBorder(solid, 1px, $colour-white);
+  margin-left: 2rem;
+  display: none;
+}
+
+.grid-square {
+  @include createBorder(solid, 1px, $colour-white);
+  &:hover {
+    background-color: $colour-red;
+    cursor: pointer;
+  }
+}
+
+.ships-container {
+  @include displayFlex(column, center, center);
+  max-width: 30rem;
+  min-width: 30rem;
+  .ships-heading-container {
+    flex: 0.15;
+    .ships-heading {
+      color: $colour-red;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .user-gameboard {
+    margin: 0 0 1rem 0;
+  }
+  .computer-gameboard {
+    margin: 1rem 0 0 0;
+  }
+}
