@@ -15,19 +15,27 @@ export default class Gameboard {
     }
   }
 
-  isPlacementPossible(x, y, ship) {
+  isPlacementPossible(x, y, ship, alignment) {
     for (let i = 0; i < ship.length; i++) {
-      if (this.board[x][y + i].ship instanceof Ship) {
+      if (alignment === 'column') {
+        if (this.board[x][y + i].ship instanceof Ship) {
+          return false;
+        }
+      } else if (this.board[x + i][y].ship instanceof Ship) {
         return false;
       }
     }
     return true;
   }
 
-  placeShip(x, y, ship) {
-    if (!this.isPlacementPossible(x, y, ship)) return false;
+  placeShip(x, y, ship, alignment) {
+    if (!this.isPlacementPossible(x, y, ship, alignment)) return false;
     for (let i = 0; i < ship.length; i++) {
-      this.board[x][y + i].ship = ship;
+      if (alignment === 'column') {
+        this.board[x][y + i].ship = ship;
+      } else {
+        this.board[x + i][y].ship = ship;
+      }
     }
     return true;
   }

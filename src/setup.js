@@ -48,23 +48,23 @@ function renderBoard(player) {
   }
 }
 
-function placeShip(x, y, ship, newShip) {
-  if (!players.user.gameboard.placeShip(x, y, newShip)) return;
+function placeShip(x, y, draggedShip, newShip, alignment) {
+  if (!players.user.gameboard.placeShip(x, y, newShip, alignment)) return;
 
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
-      if (players.user.gameboard.board[i][j].ship.type === ship.id) {
+      if (players.user.gameboard.board[i][j].ship.type === draggedShip.id) {
         document.querySelector(
           `[data-x="${i}"][data-y="${j}"]`
-        ).style.background = getComputedStyle(ship).backgroundColor;
+        ).style.background = getComputedStyle(draggedShip).backgroundColor;
       }
     }
   }
 
-  ship.remove();
+  draggedShip.remove();
 }
 
-function getShipType(x, y, ship) {
+function getShipType(x, y, ship, alignment) {
   let length;
   if (ship.id === 'destroyer') {
     length = 2;
@@ -79,7 +79,7 @@ function getShipType(x, y, ship) {
     length = 5;
   }
 
-  placeShip(x, y, ship, new Ship(ship.id, length));
+  placeShip(x, y, ship, new Ship(ship.id, length), alignment);
 }
 
 function loadGame() {

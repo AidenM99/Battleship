@@ -23,12 +23,22 @@ function dragOverHandler(e) {
 }
 
 function dropHandler(e) {
-  const ship = document.getElementById(e.dataTransfer.getData('text/plain'));
+  const draggedShip = document.getElementById(
+    e.dataTransfer.getData('text/plain')
+  );
 
-  const x = parseInt(e.target.dataset.x, 10);
-  const y = parseInt(e.target.dataset.y, 10) - componentIndex;
+  const alignment = getComputedStyle(draggedShip).flexDirection;
 
-  getShipType(x, y, ship);
+  let x = parseInt(e.target.dataset.x, 10);
+  let y = parseInt(e.target.dataset.y, 10);
+
+  if (alignment === 'column') {
+    y -= componentIndex;
+  } else {
+    x -= componentIndex;
+  }
+
+  getShipType(x, y, draggedShip, alignment);
 }
 
 export default function addDragAndDropEventListeners() {
