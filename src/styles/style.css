@@ -54,46 +54,27 @@ body header {
   }
 }
 
-.ships {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-flex: 0.85;
-      -ms-flex: 0.85;
-          flex: 0.85;
-}
-
-.ships #carrier {
+#carrier {
   background-color: #a020f0;
 }
 
-.ships #battleship {
+#battleship {
   background-color: #ffff00;
 }
 
-.ships #cruiser {
+#cruiser {
   background-color: #00ff00;
 }
 
-.ships #submarine {
+#submarine {
   background-color: #0000ff;
 }
 
-.ships #destroyer {
+#destroyer {
   background-color: #ffa500;
 }
 
-.ships .ship {
+.ship {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -107,23 +88,23 @@ body header {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  margin: 5px;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
+  margin: 5px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
 
-.ships .ship:hover {
+.ship:hover {
   -webkit-transform: scale(1.1);
           transform: scale(1.1);
   -webkit-transition: 300ms;
   transition: 300ms;
 }
 
-.ships .ship div {
+.ship div {
   border-style: solid;
   border-width: 1px;
   border-color: #ffffff;
@@ -132,7 +113,7 @@ body header {
   width: 2.875rem;
 }
 
-.alignment-button {
+button {
   background-color: #c3073f;
   border: 0.13rem solid #ffffff;
   -webkit-box-sizing: border-box;
@@ -148,7 +129,7 @@ body header {
   transition: all 0.2s;
 }
 
-.alignment-button:hover {
+button:hover {
   background-color: #ffffff;
   border: 0.13rem solid #c3073f;
   color: #c3073f;
@@ -205,6 +186,29 @@ body header {
   cursor: pointer;
 }
 
+.placement-unavailable {
+  background-color: #c3073f;
+}
+
+.start-game-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: none;
+  max-width: 30rem;
+  min-width: 30rem;
+}
+
 .ships-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -233,6 +237,25 @@ body header {
   color: #c3073f;
   font-family: 'Montserrat', sans-serif;
   margin: 0;
+}
+
+.ships-container .ships {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-flex: 0.85;
+      -ms-flex: 0.85;
+          flex: 0.85;
 }
 
 @media (max-width: 600px) {
