@@ -22,6 +22,17 @@
   }
 }
 
+.placement-unavailable {
+  background-color: $colour-red;
+}
+
+.start-game-container {
+  @include displayFlex(row, center, center);
+  display: none;
+  max-width: 30rem;
+  min-width: 30rem;
+}
+
 .ships-container {
   @include displayFlex(column, center, center);
   max-width: 30rem;
@@ -33,6 +44,10 @@
       font-family: 'Montserrat', sans-serif;
       margin: 0;
     }
+  }
+  .ships {
+    @include displayFlex(row, center, center);
+    flex: 0.85;
   }
 }
 
