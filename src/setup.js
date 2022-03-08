@@ -27,10 +27,19 @@ const getAlignment = (() => {
   return () => alignment++;
 })();
 
-function addAlignmentButtonEventListener() {
+function startGame() {
+  console.log('test');
+}
+
+function addButtonEventListeners() {
   const alignmentButton = document.querySelector('.alignment-button');
   alignmentButton.addEventListener('click', () => {
     changeAlignment(getAlignment());
+  });
+
+  const startGameButton = document.querySelector('.start-game-button');
+  startGameButton.addEventListener('click', () => {
+    startGame();
   });
 }
 
@@ -48,6 +57,13 @@ function renderBoard(player) {
   }
 }
 
+function readyCheck() {
+  if (!document.querySelector('.ships').innerHTML.includes('div')) {
+    document.querySelector('.ships-container').style.display = 'none';
+    document.querySelector('.start-game-container').style.display = 'flex';
+  }
+}
+
 function placeShip(x, y, draggedShip, newShip, alignment) {
   if (!players.user.gameboard.placeShip(x, y, newShip, alignment)) return;
 
@@ -62,6 +78,8 @@ function placeShip(x, y, draggedShip, newShip, alignment) {
   }
 
   draggedShip.remove();
+
+  readyCheck();
 }
 
 function getShipType(x, y, ship, alignment) {
@@ -82,11 +100,17 @@ function getShipType(x, y, ship, alignment) {
   placeShip(x, y, ship, new Ship(ship.id, length), alignment);
 }
 
+function showUnavailCells(x, y) {
+  document
+    .querySelector(`[data-x="${x}"][data-y="${y}"]`)
+    .classList.add('placement-unavailable');
+}
+
 function loadGame() {
   renderBoard(players.user.name);
   renderBoard(players.computer.name);
-  addAlignmentButtonEventListener();
+  addButtonEventListeners();
   addDragAndDropEventListeners();
 }
 
-export { loadGame, getShipType };
+export { loadGame, getShipType, showUnavailCells };
