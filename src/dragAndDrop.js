@@ -1,4 +1,5 @@
 import { getShipType } from './setup';
+import players from './game';
 
 let componentIndex;
 
@@ -12,10 +13,17 @@ function dragStartHandler(e) {
   }, 0);
 
   e.dataTransfer.setData('text/plain', e.target.id);
+
+  players.user.gameboard.checkAround();
 }
 
 function dragEndHandler(e) {
   e.target.style.display = 'flex';
+
+  const gridSquares = document.querySelectorAll('.grid-square');
+  gridSquares.forEach((square) => {
+    square.classList.remove('placement-unavailable');
+  });
 }
 
 function dragOverHandler(e) {

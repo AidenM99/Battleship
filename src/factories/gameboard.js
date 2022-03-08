@@ -1,4 +1,5 @@
 import Ship from './ship';
+import { showUnavailCells } from '../setup';
 
 export default class Gameboard {
   constructor() {
@@ -50,6 +51,45 @@ export default class Gameboard {
     this.board[x][y].shot = true;
     if (this.board[x][y].ship instanceof Ship) {
       this.board[x][y].ship.hit(x, y);
+    }
+  }
+
+  // Prevents ships being dragged from being placed next to placed ships
+  checkAround() {
+    // i = row (if vertical), j = column (if vertical), k = squares adjacent to the ship
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.board[i][j].ship instanceof Ship) {
+          for (let k = -1; k < 2; k += 2) {
+            if (
+              i + k > -1 &&
+              i + k < 10 &&
+              this.board[i + k][j].ship === false
+            ) {
+              // Highlights squares to the side of ship or the ends depending on alignment
+              showUnavailCells(i + k, j);
+              if (j + k > -1 && j + k < 10) {
+                // Highlights diagonal squares
+                showUnavailCells(i + k, j + k);
+              }
+            }
+            if (j + k > -1 && j + k < 10) {
+              if (this.board[i][j + k].ship === false) {
+                // Highlights squares at the ends of ship or to the side depending on alignment
+                showUnavailCells(i, j + k);
+              }
+              if (
+                i - k > -1 &&
+                i - k < 10 &&
+                this.board[i - k][j + k].ship === false
+              ) {
+                // Highlights diagonal squares
+                showUnavailCells(i - k, j + k);
+              }
+            }
+          }
+        }
+      }
     }
   }
 
