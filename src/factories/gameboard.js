@@ -1,5 +1,6 @@
 import Ship from './ship';
-import { showUnavailCells } from '../setup';
+import { registerHit, showUnavailCells } from '../setup';
+import { generateRandomPlacement } from '../game';
 
 export default class Gameboard {
   constructor() {
@@ -19,17 +20,23 @@ export default class Gameboard {
   isPlacementPossible(x, y, ship, alignment) {
     for (let i = 0; i < ship.length; i++) {
       if (alignment === 'column') {
-        if (this.board[x][y + i].ship instanceof Ship) {
+        if (
+          this.board[x][y + i].ship instanceof Ship ||
+          this.board[x][y + i].placementUnavailable
+        ) {
           return false;
         }
-      } else if (this.board[x + i][y].ship instanceof Ship) {
+      } else if (
+        this.board[x + i][y].ship instanceof Ship ||
+        this.board[x + i][y].placementUnavailable
+      ) {
         return false;
       }
     }
     return true;
   }
 
-  placeShip(x, y, ship, alignment) {
+  placeShip(x, y, alignment, ship) {
     if (!this.isPlacementPossible(x, y, ship, alignment)) return false;
     for (let i = 0; i < ship.length; i++) {
       if (alignment === 'column') {
@@ -41,17 +48,18 @@ export default class Gameboard {
     return true;
   }
 
-  receiveAttack(x, y, gameboard, player) {
+  receiveAttack(x, y, player, gameboard) {
     if (this.board[x][y].shot === true) {
       if (player.name === 'computer') {
         player.randomAttack(gameboard);
       }
       return;
     }
-    this.board[x][y].shot = true;
     if (this.board[x][y].ship instanceof Ship) {
       this.board[x][y].ship.hit(x, y);
     }
+    this.board[x][y].shot = true;
+    registerHit(x, y, player.name);
   }
 
   // Prevents ships being dragged from being placed next to placed ships
@@ -68,15 +76,18 @@ export default class Gameboard {
             ) {
               // Highlights squares to the side of ship or the ends depending on alignment
               showUnavailCells(i + k, j);
+              this.board[i + k][j].placementUnavailable = true;
               if (j + k > -1 && j + k < 10) {
                 // Highlights diagonal squares
                 showUnavailCells(i + k, j + k);
+                this.board[i + k][j + k].placementUnavailable = true;
               }
             }
             if (j + k > -1 && j + k < 10) {
               if (this.board[i][j + k].ship === false) {
                 // Highlights squares at the ends of ship or to the side depending on alignment
                 showUnavailCells(i, j + k);
+                this.board[i][j + k].placementUnavailable = true;
               }
               if (
                 i - k > -1 &&
@@ -85,12 +96,33 @@ export default class Gameboard {
               ) {
                 // Highlights diagonal squares
                 showUnavailCells(i - k, j + k);
+                this.board[i - k][j + k].placementUnavailable = true;
               }
             }
           }
         }
       }
     }
+  }
+
+  placeShipsRandomly() {
+    const ships = [
+      new Ship(2, 'destroyer'),
+      new Ship(3, 'cruiser'),
+      new Ship(3, 'submarine'),
+      new Ship(4, 'battleship'),
+      new Ship(5, 'carrier'),
+    ];
+
+    for (let i = 0; i < ships.length; i++) {
+      if (!this.placeShip(...generateRandomPlacement(ships[i]), ships[i])) i--;
+      this.checkAround();
+    }
+  }
+
+  isShip(x, y) {
+    if (this.board[x][y].ship) return true;
+    return false;
   }
 
   isGameOver() {
