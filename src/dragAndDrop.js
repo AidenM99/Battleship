@@ -1,5 +1,5 @@
-import { getShipType } from './setup';
-import players from './game';
+import { getShipType, removeUnavailCells } from './setup';
+import { players } from './game';
 
 let componentIndex;
 
@@ -20,10 +20,7 @@ function dragStartHandler(e) {
 function dragEndHandler(e) {
   e.target.style.display = 'flex';
 
-  const gridSquares = document.querySelectorAll('.grid-square');
-  gridSquares.forEach((square) => {
-    square.classList.remove('placement-unavailable');
-  });
+  removeUnavailCells();
 }
 
 function dragOverHandler(e) {
@@ -37,8 +34,10 @@ function dropHandler(e) {
 
   const alignment = getComputedStyle(draggedShip).flexDirection;
 
-  let x = parseInt(e.target.dataset.x, 10);
-  let y = parseInt(e.target.dataset.y, 10);
+  let { x, y } = {
+    x: parseInt(e.target.dataset.x, 10),
+    y: parseInt(e.target.dataset.y, 10),
+  };
 
   if (alignment === 'column') {
     y -= componentIndex;
