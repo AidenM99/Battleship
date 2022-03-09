@@ -1,6 +1,6 @@
 import addDragAndDropEventListeners from './dragAndDrop';
 import Ship from './factories/ship';
-import players from './game';
+import { players, attack, init } from './game';
 
 function changeAlignment(getAlignment) {
   const ships = document.querySelectorAll('.ship');
@@ -28,10 +28,16 @@ const getAlignment = (() => {
 })();
 
 function startGame() {
-  console.log('test');
+  const computerGameboard = document.querySelector('.computer-gameboard');
+  computerGameboard.style.display = 'grid';
+
+  const startGameContainer = document.querySelector('.start-game-container');
+  startGameContainer.style.display = 'none';
+
+  init();
 }
 
-function addButtonEventListeners() {
+function addEventListeners() {
   const alignmentButton = document.querySelector('.alignment-button');
   alignmentButton.addEventListener('click', () => {
     changeAlignment(getAlignment());
@@ -41,10 +47,19 @@ function addButtonEventListeners() {
   startGameButton.addEventListener('click', () => {
     startGame();
   });
+
+  const computerGridSquare = document.querySelectorAll('.computer-square');
+  computerGridSquare.forEach((square) => {
+    square.addEventListener('click', (e) => {
+      attack(players.computer.gameboard, e);
+    });
+  });
+
+  addDragAndDropEventListeners();
 }
 
-function renderCell(x, y) {
-  return `<div class="grid-square" data-x='${x}' data-y='${y}'></div>`;
+function renderCell(x, y, player) {
+  return `<div class="${player}-square grid-square" data-x='${x}' data-y='${y}'></div>`;
 }
 
 function renderBoard(player) {
@@ -53,7 +68,7 @@ function renderBoard(player) {
   for (let i = 0; i < 100; i++) {
     const x = i % 10;
     const y = Math.floor(i / 10);
-    gameboard.innerHTML += renderCell(x, y);
+    gameboard.innerHTML += renderCell(x, y, player);
   }
 }
 
@@ -64,8 +79,8 @@ function readyCheck() {
   }
 }
 
-function placeShip(x, y, draggedShip, newShip, alignment) {
-  if (!players.user.gameboard.placeShip(x, y, newShip, alignment)) return;
+function placeShip(x, y, draggedShip, alignment, newShip) {
+  if (!players.user.gameboard.placeShip(x, y, alignment, newShip)) return;
 
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
@@ -73,6 +88,11 @@ function placeShip(x, y, draggedShip, newShip, alignment) {
         document.querySelector(
           `[data-x="${i}"][data-y="${j}"]`
         ).style.background = getComputedStyle(draggedShip).backgroundColor;
+      }
+      if (players.computer.gameboard.board[i][j].ship instanceof Ship) {
+        document.querySelectorAll(
+          `[data-x="${i}"][data-y="${j}"]`
+        )[1].style.backgroundColor = 'red';
       }
     }
   }
@@ -97,7 +117,7 @@ function getShipType(x, y, ship, alignment) {
     length = 5;
   }
 
-  placeShip(x, y, ship, new Ship(ship.id, length), alignment);
+  placeShip(x, y, ship, alignment, new Ship(length, ship.id));
 }
 
 function showUnavailCells(x, y) {
@@ -106,11 +126,37 @@ function showUnavailCells(x, y) {
     .classList.add('placement-unavailable');
 }
 
+function removeUnavailCells() {
+  const gridSquares = document.querySelectorAll('.grid-square');
+  gridSquares.forEach((square) => {
+    square.classList.remove('placement-unavailable');
+  });
+}
+
+function registerHit(x, y, player) {
+  if (player === 'user') {
+    document.querySelectorAll(
+      `[data-x="${x}"][data-y="${y}"]`
+    )[1].style.backgroundColor = 'purple';
+  } else {
+    document.querySelectorAll(
+      `[data-x="${x}"][data-y="${y}"]`
+    )[0].style.backgroundColor = 'purple';
+  }
+}
+
 function loadGame() {
   renderBoard(players.user.name);
   renderBoard(players.computer.name);
-  addButtonEventListeners();
-  addDragAndDropEventListeners();
+  players.computer.gameboard.placeShipsRandomly();
+  removeUnavailCells();
+  addEventListeners();
 }
 
-export { loadGame, getShipType, showUnavailCells };
+export {
+  loadGame,
+  getShipType,
+  registerHit,
+  showUnavailCells,
+  removeUnavailCells,
+};
