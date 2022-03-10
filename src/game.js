@@ -1,4 +1,5 @@
 import Player from './factories/player';
+import { displayGameOver } from './setup';
 
 const players = {
   user: new Player('user'),
@@ -30,13 +31,13 @@ function generateRandomPlacement(ship) {
 }
 
 function checkHit(gameboard, x, y) {
-  if (players.user.turn()) {
+  if (players.user.getTurn()) {
     if (!players.user.attack(x, y, gameboard)) {
       return false;
     }
   }
   if (gameboard.isGameOver()) {
-    console.log('game over!');
+    displayGameOver();
     return false;
   }
   return true;
@@ -45,16 +46,16 @@ function checkHit(gameboard, x, y) {
 function turnController() {
   players.user.setTurn();
   players.computer.setTurn();
-  if (players.computer.turn()) {
+  if (players.computer.getTurn()) {
     players.computer.setConsideringAttack();
     // eslint-disable-next-line no-use-before-define
-    setTimeout(aiPlay, 1000);
+    setTimeout(aiPlay, 500);
   }
 }
 
 function attack(gameboard, e) {
   if (!players.computer.consideringAttack()) {
-    if (players.user.turn()) {
+    if (players.user.getTurn()) {
       const { x, y } = {
         x: parseInt(e.target.dataset.x, 10),
         y: parseInt(e.target.dataset.y, 10),
@@ -63,7 +64,7 @@ function attack(gameboard, e) {
       if (checkHit(gameboard, x, y)) turnController();
     } else {
       players.computer.randomAttack(gameboard);
-      checkHit(gameboard);
+      if (checkHit(gameboard)) turnController();
     }
   }
 }
@@ -71,7 +72,6 @@ function attack(gameboard, e) {
 function aiPlay() {
   players.computer.setConsideringAttack();
   attack(players.user.gameboard);
-  turnController();
 }
 
 export { players, init, attack, generateRandomPlacement };
