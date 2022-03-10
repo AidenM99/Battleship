@@ -157,11 +157,6 @@ function placeShip(x, y, draggedShip, alignment, newShip) {
           `[data-x="${i}"][data-y="${j}"]`
         ).style.background = getComputedStyle(draggedShip).backgroundColor;
       }
-      if (players.computer.gameboard.board[i][j].ship instanceof Ship) {
-        document.querySelectorAll(
-          `[data-x="${i}"][data-y="${j}"]`
-        )[1].style.background = 'purple';
-      }
     }
   }
 
