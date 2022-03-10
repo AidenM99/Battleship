@@ -1,4 +1,4 @@
-import { getShipType, removeUnavailCells } from './setup';
+import { getShipType, removeUnavailCells } from './dom';
 import { players } from './game';
 
 let componentIndex;

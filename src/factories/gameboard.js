@@ -1,5 +1,5 @@
 import Ship from './ship';
-import { registerHit, showUnavailCells } from '../setup';
+import { registerHit, showUnavailCells } from '../dom';
 import { generateRandomPlacement } from '../game';
 
 export default class Gameboard {

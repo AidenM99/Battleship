@@ -1,5 +1,5 @@
 import Player from './factories/player';
-import { displayGameOver } from './setup';
+import { displayGameOver } from './dom';
 
 const players = {
   user: new Player('user'),
