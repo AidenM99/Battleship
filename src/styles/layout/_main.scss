@@ -16,10 +16,19 @@
 
 .grid-square {
   @include createBorder(solid, 1px, $colour-white);
+  @include displayFlex(row, center, center);
   &:hover {
     background-color: $colour-red;
     cursor: pointer;
   }
+  .fa-fire {
+    color: $colour-orange;
+    font-size: 1.5rem;
+  }
+}
+
+.missed {
+  background-color: $colour-blue;
 }
 
 .placement-unavailable {
