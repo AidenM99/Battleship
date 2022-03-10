@@ -1,4 +1,4 @@
-import { loadGame, addButtonEventListeners } from './setup';
+import { loadGame, addButtonEventListeners } from './dom';
 import './styles/style.css';
 
 loadGame();
