@@ -17,6 +17,14 @@ export default class Gameboard {
     }
   }
 
+  resetBoard() {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        this.board[i][j] = { ship: false, shot: false };
+      }
+    }
+  }
+
   isPlacementPossible(x, y, ship, alignment) {
     for (let i = 0; i < ship.length; i++) {
       if (alignment === 'column') {
@@ -59,7 +67,7 @@ export default class Gameboard {
       this.board[x][y].ship.hit(x, y);
     }
     this.board[x][y].shot = true;
-    registerHit(x, y, player.name);
+    registerHit(x, y, player.name, gameboard);
   }
 
   // Prevents ships being dragged from being placed next to placed ships
