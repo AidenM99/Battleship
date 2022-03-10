@@ -11,7 +11,7 @@ export default class Player {
 
   attack(x, y, gameboard) {
     if (gameboard.board[x][y].shot === true) return false;
-    gameboard.receiveAttack(x, y, this);
+    gameboard.receiveAttack(x, y, this, gameboard);
     return true;
   }
 
@@ -21,7 +21,7 @@ export default class Player {
     gameboard.receiveAttack(x, y, this, gameboard);
   }
 
-  turn() {
+  getTurn() {
     return this.isTurn;
   }
 
