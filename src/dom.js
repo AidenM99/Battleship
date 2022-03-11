@@ -84,6 +84,39 @@ function replenishFleet() {
   ships.appendChild(destroyer);
 }
 
+function removeShips() {
+  const ships = document.querySelector('.ships');
+  ships.innerHTML = '';
+
+  readyCheck();
+}
+
+function displayShips(gameboard) {
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      const shipSquare = document.querySelector(
+        `[data-x="${i}"][data-y="${j}"]`
+      );
+
+      if (gameboard[i][j].ship) {
+        if (gameboard[i][j].ship.type === 'carrier') {
+          shipSquare.id = 'carrier';
+        } else if (gameboard[i][j].ship.type === 'battleship') {
+          shipSquare.id = 'battleship';
+        } else if (gameboard[i][j].ship.type === 'cruiser') {
+          shipSquare.id = 'cruiser';
+        } else if (gameboard[i][j].ship.type === 'submarine') {
+          shipSquare.id = 'submarine';
+        } else {
+          shipSquare.id = 'destroyer';
+        }
+      }
+    }
+  }
+  removeShips();
+  removeUnavailCells();
+}
+
 function handleUIElements() {
   const gameOverScreen = document.querySelector('.gameover-modal');
   gameOverScreen.style.display = 'none';
@@ -108,6 +141,12 @@ function addButtonEventListeners() {
   const alignmentButton = document.querySelector('.alignment-button');
   alignmentButton.addEventListener('click', () => {
     changeAlignment(getAlignment());
+  });
+
+  const autoPlaceButton = document.querySelector('.auto-place-button');
+  autoPlaceButton.addEventListener('click', () => {
+    players.user.gameboard.placeShipsRandomly();
+    displayShips(players.user.gameboard.board);
   });
 
   const startGameButton = document.querySelector('.start-game-button');
@@ -196,24 +235,6 @@ function removeUnavailCells() {
   });
 }
 
-function registerHit(x, y, player, gameboard) {
-  const gameboards = document.querySelectorAll(
-    `[data-x="${x}"][data-y="${y}"]`
-  );
-
-  if (gameboard.isShip(x, y)) {
-    if (player === 'user') {
-      gameboards[1].innerHTML = '<i class="fa-solid fa-fire"></i>';
-    } else {
-      gameboards[0].innerHTML = '<i class="fa-solid fa-fire"></i>';
-    }
-  } else if (player === 'user') {
-    gameboards[1].classList.add('missed');
-  } else {
-    gameboards[0].classList.add('missed');
-  }
-}
-
 function displayGameOver() {
   const gameOverScreen = document.querySelector('.gameover-modal');
   gameOverScreen.style.display = 'flex';
@@ -222,10 +243,34 @@ function displayGameOver() {
   modalContent.classList.add('animate__animated', 'animate__zoomIn');
 
   const winnerText = document.querySelector('.winner-announcement');
+
   if (players.user.getTurn()) {
     winnerText.textContent = 'VICTORY!';
   } else {
     winnerText.textContent = 'DEFEAT!';
+  }
+}
+
+function registerHit(gameboard, player) {
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      const gameboards = document.querySelectorAll(
+        `[data-x="${i}"][data-y="${j}"]`
+      );
+      if (gameboard.board[i][j].shot) {
+        if (gameboard.board[i][j].ship) {
+          if (player === 'user') {
+            gameboards[1].innerHTML = '<i class="fa-solid fa-fire"></i>';
+          } else {
+            gameboards[0].innerHTML = '<i class="fa-solid fa-fire"></i>';
+          }
+        } else if (player === 'user') {
+          gameboards[1].classList.add('missed');
+        } else {
+          gameboards[0].classList.add('missed');
+        }
+      }
+    }
   }
 }
 
