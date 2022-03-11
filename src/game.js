@@ -1,5 +1,5 @@
 import Player from './factories/player';
-import { displayGameOver } from './dom';
+import { displayGameOver, registerHit } from './dom';
 
 const players = {
   user: new Player('user'),
@@ -30,12 +30,7 @@ function generateRandomPlacement(ship) {
   return [x, y, alignment];
 }
 
-function checkHit(gameboard, x, y) {
-  if (players.user.getTurn()) {
-    if (!players.user.attack(x, y, gameboard)) {
-      return false;
-    }
-  }
+function checkGameOver(gameboard) {
   if (gameboard.isGameOver()) {
     displayGameOver();
     return false;
@@ -61,10 +56,14 @@ function attack(gameboard, e) {
         y: parseInt(e.target.dataset.y, 10),
       };
 
-      if (checkHit(gameboard, x, y)) turnController();
+      if (players.user.attack(x, y, gameboard)) {
+        registerHit(gameboard, players.user.name);
+        if (checkGameOver(gameboard)) turnController();
+      }
     } else {
       players.computer.randomAttack(gameboard);
-      if (checkHit(gameboard)) turnController();
+      registerHit(gameboard, players.computer.name);
+      if (checkGameOver(gameboard)) turnController();
     }
   }
 }
