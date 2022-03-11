@@ -1,5 +1,5 @@
 import Ship from './ship';
-import { registerHit, showUnavailCells } from '../dom';
+import { showUnavailCells } from '../dom';
 import { generateRandomPlacement } from '../game';
 
 export default class Gameboard {
@@ -67,7 +67,6 @@ export default class Gameboard {
       this.board[x][y].ship.hit(x, y);
     }
     this.board[x][y].shot = true;
-    registerHit(x, y, player.name, gameboard);
   }
 
   // Prevents ships being dragged from being placed next to placed ships
