@@ -5,6 +5,9 @@
   @include createGrid;
   @include createBorder(solid, 1px, $colour-white);
   margin-right: 2rem;
+  @media (max-width: 768px) {
+    margin: 0 0 3rem 0;
+  }
 }
 
 .computer-gameboard {
@@ -12,6 +15,9 @@
   @include createBorder(solid, 1px, $colour-white);
   margin-left: 2rem;
   display: none;
+  @media (max-width: 768px) {
+    margin: 0;
+  }
 }
 
 .grid-square {
@@ -23,7 +29,7 @@
   }
   .fa-fire {
     color: $colour-orange;
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 }
 
@@ -46,6 +52,13 @@
   @include displayFlex(column, center, center);
   max-width: 30rem;
   min-width: 30rem;
+  height: 30rem;
+  .alignment-button-container {
+    margin: 1rem;
+  }
+  .auto-place-button-container {
+    margin: 1rem;
+  }
   .ships-heading-container {
     flex: 0.15;
     .ships-heading {
@@ -57,14 +70,5 @@
   .ships {
     @include displayFlex(row, center, center);
     flex: 0.85;
-  }
-}
-
-@media (max-width: 600px) {
-  .user-gameboard {
-    margin: 0 0 1rem 0;
-  }
-  .computer-gameboard {
-    margin: 1rem 0 0 0;
   }
 }

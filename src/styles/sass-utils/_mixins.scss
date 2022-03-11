@@ -11,6 +11,7 @@
   grid-template-rows: repeat(10, 1fr);
   min-width: 30rem;
   max-width: 30rem;
+  height: 30rem;
 }
 
 @mixin createBorder($style, $width, $colour) {

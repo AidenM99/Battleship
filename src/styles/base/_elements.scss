@@ -5,17 +5,14 @@ body {
   margin: 0;
   background-color: $background;
   main {
-    @include displayFlex(row, center, stretch);
-    height: 30rem;
+    @include displayFlex(row, center, center);
+    padding: 4rem;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+    }
   }
   header {
-    margin: 2rem 0;
-  }
-}
-
-@media (max-width: 600px) {
-  main {
-    flex-direction: column;
-    align-items: center;
+    margin: 2rem 0 2rem 0;
   }
 }
