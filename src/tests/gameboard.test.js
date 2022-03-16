@@ -46,12 +46,6 @@ describe('Gameboard', () => {
     expect(gameboard.isShip(0, 0)).toBe(true);
   });
 
-  test('board is correctly reset', () => {
-    gameboard.placeShip(0, 0, 'column', ship);
-    gameboard.resetBoard();
-    expect(gameboard.board[0][0].ship).toBe(false);
-  });
-
   test('position correctly receives attack', () => {
     gameboard.receiveAttack(0, 0);
     expect(gameboard.board[0][0].shot).toBe(true);
@@ -84,5 +78,10 @@ describe('Gameboard', () => {
     gameboard.receiveAttack(0, 0);
     gameboard.receiveAttack(0, 1);
     expect(gameboard.isGameOver()).toBe(false);
+  });
+
+  test('ships are placed randomly', () => {
+    gameboard.placeShipsRandomly();
+    expect(gameboard.getEmptyFieldsAmount()).toEqual(83);
   });
 });
