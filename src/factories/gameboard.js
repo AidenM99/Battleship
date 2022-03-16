@@ -1,6 +1,4 @@
 import Ship from './ship';
-import { showUnavailCells } from '../dom';
-import { generateRandomPlacement } from '../game';
 
 export default class Gameboard {
   constructor() {
@@ -13,14 +11,6 @@ export default class Gameboard {
       this.board.push([]);
       for (let j = 0; j < 10; j++) {
         this.board[i].push({ ship: false, shot: false });
-      }
-    }
-  }
-
-  resetBoard() {
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        this.board[i][j] = { ship: false, shot: false };
       }
     }
   }
@@ -61,12 +51,13 @@ export default class Gameboard {
       if (player.name === 'computer') {
         player.randomAttack(gameboard);
       }
-      return;
+      return false;
     }
     if (this.board[x][y].ship instanceof Ship) {
       this.board[x][y].ship.hit(x, y);
     }
     this.board[x][y].shot = true;
+    return true;
   }
 
   // Prevents ships being dragged from being placed next to placed ships
@@ -82,18 +73,15 @@ export default class Gameboard {
               this.board[i + k][j].ship === false
             ) {
               // Highlights squares to the side of ship or the ends depending on alignment
-              showUnavailCells(i + k, j);
               this.board[i + k][j].placementUnavailable = true;
               if (j + k > -1 && j + k < 10) {
                 // Highlights diagonal squares
-                showUnavailCells(i + k, j + k);
                 this.board[i + k][j + k].placementUnavailable = true;
               }
             }
             if (j + k > -1 && j + k < 10) {
               if (this.board[i][j + k].ship === false) {
                 // Highlights squares at the ends of ship or to the side depending on alignment
-                showUnavailCells(i, j + k);
                 this.board[i][j + k].placementUnavailable = true;
               }
               if (
@@ -102,7 +90,6 @@ export default class Gameboard {
                 this.board[i - k][j + k].ship === false
               ) {
                 // Highlights diagonal squares
-                showUnavailCells(i - k, j + k);
                 this.board[i - k][j + k].placementUnavailable = true;
               }
             }
@@ -122,7 +109,23 @@ export default class Gameboard {
     ];
 
     for (let i = 0; i < ships.length; i++) {
-      if (!this.placeShip(...generateRandomPlacement(ships[i]), ships[i])) i--;
+      let x = Math.floor(Math.random() * 10);
+      let y = Math.floor(Math.random() * 10);
+      let alignment;
+
+      if (Math.random() < 0.5) {
+        alignment = 'row';
+      } else {
+        alignment = 'column';
+      }
+
+      if (alignment === 'column') {
+        if (y + ships[i].length > 9) {
+          y = 10 - ships[i].length;
+        }
+      } else if (x + ships[i].length > 9) x = 10 - ships[i].length;
+
+      if (!this.placeShip(x, y, alignment, ships[i])) i--;
       this.checkAround();
     }
   }
@@ -132,10 +135,25 @@ export default class Gameboard {
     return false;
   }
 
+  isShot(x, y) {
+    if (this.board[x][y].shot) return true;
+    return false;
+  }
+
+  getEmptyFieldsAmount() {
+    let result = 0;
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (!this.board[i][j].ship) result++;
+      }
+    }
+    return result;
+  }
+
   isGameOver() {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        if (this.board[i][j].ship instanceof Ship) {
+        if (this.board[i][j].ship) {
           if (!this.board[i][j].ship.isSunk()) {
             return false;
           }
