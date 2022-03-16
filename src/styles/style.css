@@ -25,7 +25,7 @@ body main {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 4rem;
+  margin: 3rem;
 }
 
 @media (max-width: 768px) {
@@ -56,15 +56,15 @@ body header {
   }
 }
 
-@media (max-width: 992px) and (max-width: 768px) {
+@media (max-width: 450px) {
   :root {
-    font-size: 10px;
+    font-size: 8px;
   }
 }
 
-@media (max-width: 992px) and (max-width: 400px) {
+@media (max-width: 330px) {
   :root {
-    font-size: 8px;
+    font-size: 6.5px;
   }
 }
 
@@ -198,6 +198,18 @@ button:hover {
           transform: scale(1.1);
 }
 
+@media (max-width: 450px) {
+  button {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 330px) {
+  button {
+    font-size: 9.5px;
+  }
+}
+
 .main-heading {
   color: #c3073f;
   font-family: 'Big Shoulders Stencil Text', cursive;
@@ -289,6 +301,13 @@ button:hover {
   background-color: #c3073f;
 }
 
+.disabled {
+  background-color: #3a3b3c;
+  -webkit-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
+  pointer-events: none;
+}
+
 .start-game-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -327,8 +346,22 @@ button:hover {
   height: 30rem;
 }
 
+@media (max-width: 768px) {
+  .ships-container {
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+  }
+}
+
 .ships-container .alignment-button-container {
   margin: 1rem;
+}
+
+@media (max-width: 992px) {
+  .ships-container .alignment-button-container {
+    display: none;
+  }
 }
 
 .ships-container .auto-place-button-container {
@@ -345,6 +378,7 @@ button:hover {
   color: #c3073f;
   font-family: 'Montserrat', sans-serif;
   margin: 0;
+  font-size: 1.75rem;
 }
 
 .ships-container .ships {
@@ -364,6 +398,12 @@ button:hover {
   -webkit-box-flex: 0.85;
       -ms-flex: 0.85;
           flex: 0.85;
+}
+
+@media (max-width: 992px) {
+  .ships-container .ships {
+    display: none;
+  }
 }
 
 .animate__animated.animate__zoomIn {
