@@ -53,4 +53,10 @@ describe('Player', () => {
     computer.setConsideringAttack();
     expect(computer.consideringAttack()).toBe(true);
   });
+
+  test('computer shots are recorded', () => {
+    randomMock.mockReturnValue(0.2);
+    computer.randomAttack(user.gameboard);
+    expect(computer.getHits()).toEqual([{ x: 2, y: 2 }]);
+  });
 });
