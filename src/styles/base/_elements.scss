@@ -6,7 +6,7 @@ body {
   background-color: $background;
   main {
     @include displayFlex(row, center, center);
-    padding: 4rem;
+    margin: 3rem;
     @media (max-width: 768px) {
       flex-direction: column;
       align-items: center;
