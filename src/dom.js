@@ -1,4 +1,5 @@
 import addDragAndDropEventListeners from './dragAndDrop';
+import Player from './factories/player';
 import Ship from './factories/ship';
 import { players, attack, init } from './game';
 import 'animate.css';
@@ -98,14 +99,14 @@ function displayShips(gameboard) {
         `[data-x="${i}"][data-y="${j}"]`
       );
 
-      if (gameboard[i][j].ship) {
-        if (gameboard[i][j].ship.type === 'carrier') {
+      if (gameboard.isShip(i, j)) {
+        if (gameboard.board[i][j].ship.type === 'carrier') {
           shipSquare.id = 'carrier';
-        } else if (gameboard[i][j].ship.type === 'battleship') {
+        } else if (gameboard.board[i][j].ship.type === 'battleship') {
           shipSquare.id = 'battleship';
-        } else if (gameboard[i][j].ship.type === 'cruiser') {
+        } else if (gameboard.board[i][j].ship.type === 'cruiser') {
           shipSquare.id = 'cruiser';
-        } else if (gameboard[i][j].ship.type === 'submarine') {
+        } else if (gameboard.board[i][j].ship.type === 'submarine') {
           shipSquare.id = 'submarine';
         } else {
           shipSquare.id = 'destroyer';
@@ -146,7 +147,7 @@ function addButtonEventListeners() {
   const autoPlaceButton = document.querySelector('.auto-place-button');
   autoPlaceButton.addEventListener('click', () => {
     players.user.gameboard.placeShipsRandomly();
-    displayShips(players.user.gameboard.board);
+    displayShips(players.user.gameboard);
   });
 
   const startGameButton = document.querySelector('.start-game-button');
@@ -186,6 +187,18 @@ function readyCheck() {
   }
 }
 
+function autoPlaceController() {
+  const autoPlaceButton = document.querySelector('.auto-place-button');
+
+  if (players.user.gameboard.getEmptyFieldsAmount() !== 100) {
+    autoPlaceButton.setAttribute('disabled', true);
+    autoPlaceButton.classList.add('disabled');
+  } else {
+    autoPlaceButton.removeAttribute('disabled');
+    autoPlaceButton.classList.remove('disabled');
+  }
+}
+
 function placeShip(x, y, draggedShip, alignment, newShip) {
   if (!players.user.gameboard.placeShip(x, y, alignment, newShip)) return;
 
@@ -202,6 +215,7 @@ function placeShip(x, y, draggedShip, alignment, newShip) {
   draggedShip.remove();
 
   readyCheck();
+  autoPlaceController();
 }
 
 function getShipType(x, y, ship, alignment) {
@@ -222,10 +236,16 @@ function getShipType(x, y, ship, alignment) {
   placeShip(x, y, ship, alignment, new Ship(length, ship.id));
 }
 
-function showUnavailCells(x, y) {
-  document
-    .querySelector(`[data-x="${x}"][data-y="${y}"]`)
-    .classList.add('placement-unavailable');
+function showUnavailCells() {
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      if (players.user.gameboard.board[i][j].placementUnavailable) {
+        document
+          .querySelector(`[data-x="${i}"][data-y="${j}"]`)
+          .classList.add('placement-unavailable');
+      }
+    }
+  }
 }
 
 function removeUnavailCells() {
@@ -257,8 +277,8 @@ function registerHit(gameboard, player) {
       const gameboards = document.querySelectorAll(
         `[data-x="${i}"][data-y="${j}"]`
       );
-      if (gameboard.board[i][j].shot) {
-        if (gameboard.board[i][j].ship) {
+      if (gameboard.isShot(i, j)) {
+        if (gameboard.isShip(i, j)) {
           if (player === 'user') {
             gameboards[1].innerHTML = '<i class="fa-solid fa-fire"></i>';
           } else {
@@ -284,12 +304,11 @@ function loadGame() {
 }
 
 function restartGame() {
-  players.computer.gameboard.resetBoard();
-  players.user.gameboard.resetBoard();
-  players.computer.isTurn = false;
-  players.user.isTurn = false;
+  players.user = new Player('user');
+  players.computer = new Player('computer');
   handleUIElements();
   replenishFleet();
+  autoPlaceController();
   changeAlignment(getAlignment());
   loadGame();
 }
