@@ -1,4 +1,4 @@
-import { getShipType, removeUnavailCells } from './dom';
+import { getShipType, showUnavailCells, removeUnavailCells } from './dom';
 import { players } from './game';
 
 let componentIndex;
@@ -15,6 +15,7 @@ function dragStartHandler(e) {
   e.dataTransfer.setData('text/plain', e.target.id);
 
   players.user.gameboard.checkAround();
+  showUnavailCells();
 }
 
 function dragEndHandler(e) {
