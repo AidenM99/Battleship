@@ -10,26 +10,6 @@ function init() {
   players.user.setTurn();
 }
 
-function generateRandomPlacement(ship) {
-  let x = Math.floor(Math.random() * 10);
-  let y = Math.floor(Math.random() * 10);
-  let alignment;
-
-  if (Math.random() < 0.5) {
-    alignment = 'row';
-  } else {
-    alignment = 'column';
-  }
-
-  if (alignment === 'column') {
-    if (y + ship.length > 9) {
-      y = 10 - ship.length;
-    }
-  } else if (x + ship.length > 9) x = 10 - ship.length;
-
-  return [x, y, alignment];
-}
-
 function checkGameOver(gameboard) {
   if (gameboard.isGameOver()) {
     displayGameOver();
@@ -73,4 +53,4 @@ function aiPlay() {
   attack(players.user.gameboard);
 }
 
-export { players, init, attack, generateRandomPlacement };
+export { players, init, attack };
