@@ -1,7 +1,7 @@
 ## Battleship
 A battleship game where the goal is to try and sink all of the opponent's ships. 
 
-- Live Demo: https://aidenm99.github.io/Weather-App/
+- Live Demo: https://aidenm99.github.io/Battleship/
 
 ## Technologies Used
 This project was built using:
