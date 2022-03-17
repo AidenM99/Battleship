@@ -8,6 +8,7 @@ function changeAlignment(getAlignment) {
   const ships = document.querySelectorAll('.ship');
   const shipsContainer = document.querySelector('.ships');
 
+  // Numbering system to determine alignment. Increments each time button is pressed
   if (getAlignment % 2 !== 0) {
     ships.forEach((ship) => {
       ship.style.flexDirection = 'column';
@@ -114,6 +115,7 @@ function displayShips(gameboard) {
       }
     }
   }
+
   removeShips();
   removeUnavailCells();
 }
@@ -190,6 +192,8 @@ function readyCheck() {
 function autoPlaceController() {
   const autoPlaceButton = document.querySelector('.auto-place-button');
 
+  // Auto place needs to be disabled if a ship is placed on the board
+  // This prevents duplicating ships bug by placing a ship and then auto placing
   if (players.user.gameboard.getEmptyFieldsAmount() !== 100) {
     autoPlaceButton.setAttribute('disabled', true);
     autoPlaceButton.classList.add('disabled');
@@ -202,6 +206,7 @@ function autoPlaceController() {
 function placeShip(x, y, draggedShip, alignment, newShip) {
   if (!players.user.gameboard.placeShip(x, y, alignment, newShip)) return;
 
+  // Sets gameboard square colour to colour of the dragged ship
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
       if (players.user.gameboard.board[i][j].ship.type === draggedShip.id) {
@@ -218,6 +223,7 @@ function placeShip(x, y, draggedShip, alignment, newShip) {
   autoPlaceController();
 }
 
+// Constructs ship with correct length by reading its id
 function getShipType(x, y, ship, alignment) {
   let length;
   if (ship.id === 'destroyer') {
@@ -236,6 +242,8 @@ function getShipType(x, y, ship, alignment) {
   placeShip(x, y, ship, alignment, new Ship(length, ship.id));
 }
 
+// Shows squares where the user cannot place a ship
+// Ships cannot be placed adjacent to one another
 function showUnavailCells() {
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
@@ -271,6 +279,7 @@ function displayGameOver() {
   }
 }
 
+// Displays hits on the UI. If ship, append icon. If not ship, colour the square blue using a class
 function registerHit(gameboard, player) {
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {

@@ -6,6 +6,7 @@ const players = {
   computer: new Player('computer'),
 };
 
+// Set user turn to true on game start
 function init() {
   players.user.setTurn();
 }
@@ -18,6 +19,7 @@ function checkGameOver(gameboard) {
   return true;
 }
 
+// Alternates turns. If user/computer turn is true, set it to false and vice versa
 function turnController() {
   players.user.setTurn();
   players.computer.setTurn();
@@ -29,6 +31,7 @@ function turnController() {
 }
 
 function attack(gameboard, e) {
+  // Considering attack prevents user from taking their turn while setTimeout for the ai's turn is active
   if (!players.computer.consideringAttack()) {
     if (players.user.getTurn()) {
       const { x, y } = {

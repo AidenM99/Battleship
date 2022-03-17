@@ -1,6 +1,8 @@
 import { getShipType, showUnavailCells, removeUnavailCells } from './dom';
 import { players } from './game';
 
+// Component index is needed for proper ship placement on the board
+// Variable is equal to the specific ship component a user is dragging, which all have a unique data-index value
 let componentIndex;
 
 function setComponentIndex(e) {

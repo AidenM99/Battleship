@@ -6,6 +6,7 @@ export default class Gameboard {
     this.initialiseBoard();
   }
 
+  // Push object to each square of array to determine if location has ship or is shot
   initialiseBoard() {
     for (let i = 0; i < 10; i++) {
       this.board.push([]);
@@ -15,17 +16,18 @@ export default class Gameboard {
     }
   }
 
+  // Ensures ships cannot be placed on top of each other or within one square of one another
   isPlacementPossible(x, y, ship, alignment) {
     for (let i = 0; i < ship.length; i++) {
       if (alignment === 'column') {
         if (
-          this.board[x][y + i].ship instanceof Ship ||
+          this.board[x][y + i].ship ||
           this.board[x][y + i].placementUnavailable
         ) {
           return false;
         }
       } else if (
-        this.board[x + i][y].ship instanceof Ship ||
+        this.board[x + i][y].ship ||
         this.board[x + i][y].placementUnavailable
       ) {
         return false;
@@ -53,7 +55,7 @@ export default class Gameboard {
       }
       return false;
     }
-    if (this.board[x][y].ship instanceof Ship) {
+    if (this.board[x][y].ship) {
       this.board[x][y].ship.hit(x, y);
     }
     this.board[x][y].shot = true;
@@ -65,7 +67,7 @@ export default class Gameboard {
     // i = row (if vertical), j = column (if vertical), k = squares adjacent to the ship
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        if (this.board[i][j].ship instanceof Ship) {
+        if (this.board[i][j].ship) {
           for (let k = -1; k < 2; k += 2) {
             if (
               i + k > -1 &&
